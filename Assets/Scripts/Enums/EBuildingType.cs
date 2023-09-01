@@ -6,8 +6,6 @@ using System.Threading.Tasks;
 
 public enum EBuildingType
 {
-    Misc_DirtPath,
-
     // T1
     Buff_Bakery,
     Gathering_Farm,
@@ -20,6 +18,9 @@ public enum EBuildingType
     Storage_Cartographer,
     Storage_House,
     Appeal_FlowerGarden,
+    Gathering_Ranch,
+    Misc_DirtPath,
+    Misc_DemolitionSite, // Store res from destroyed building. Replaces the building
 
     // T2
     Appeal_Pub,
@@ -40,6 +41,7 @@ public enum EBuildingType
     Gathering_LumberCamp,
     Storage_Warehouse,
     Appeal_LampPost,
+
 
     // T3
     Appeal_Circus,

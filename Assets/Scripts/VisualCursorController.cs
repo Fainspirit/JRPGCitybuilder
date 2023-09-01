@@ -4,13 +4,12 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 // Follow cursor
-public class CursorController : MonoBehaviour
+public class VisualCursorController : MonoBehaviour
 {
 
     // Start is called before the first frame update
     void Start()
     {
-
     }
 
     // Update is called once per frame
@@ -23,7 +22,7 @@ public class CursorController : MonoBehaviour
     void MoveSnapped()
     {
         Vector2Int pos = InputManager.CursorGridPos * 2;
-        transform.position = new Vector3(pos.x, 0, pos.y);
+        transform.position = new Vector3(pos.x, transform.position.y, pos.y);
 
     }
 }

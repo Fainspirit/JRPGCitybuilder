@@ -27,7 +27,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 928105921876038530}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.18, y: 0.5, z: 1.56}
+  m_LocalPosition: {x: 3.31, y: 0.5, z: 2.12}
   m_LocalScale: {x: 0.6, y: 1, z: 0.6}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -124,7 +124,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3958551711383573763}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.28000003, y: 0.5, z: 2.1399999}
+  m_LocalPosition: {x: -0.57, y: 0.5, z: 3.4}
   m_LocalScale: {x: 0.6, y: 1, z: 0.6}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -221,7 +221,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4743660466439329863}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.14, y: 0.5, z: 0.009999931}
+  m_LocalPosition: {x: 3.1, y: 0.5, z: -0.86}
   m_LocalScale: {x: 0.6, y: 1, z: 0.6}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -319,7 +319,7 @@ Transform:
   m_GameObject: {fileID: 7535165707364899317}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 1, y: 0, z: 1}
-  m_LocalScale: {x: 3.6, y: 0.25, z: 3.6}
+  m_LocalScale: {x: 7.6, y: 0.25, z: 7.6}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8097331874956753823}
@@ -532,14 +532,26 @@ MonoBehaviour:
   m_GameObject: {fileID: 8097331874956753892}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cdf67de083cc20e4588a67b0e960cb5a, type: 3}
+  m_Script: {fileID: 11500000, guid: 5c1f2111fe573d848a9f8392b8df79cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Size: {x: 2, y: 2}
-  BuildingType: 2
-  Offset: {x: 0, y: 0}
+  CivilianCost: 3
+  Size: {x: 4, y: 4}
+  Offset: {x: -1, y: -1}
   _position: {x: 0, y: 0}
   _occupyingTiles: []
+  FoodProduced: 35
+  WaterConsumed: 15
+  _waterRef:
+    _resourceType: 0
+    Icon: {fileID: 0}
+    Supply: 0
+    Demand: 0
+  _foodRef:
+    _resourceType: 0
+    Icon: {fileID: 0}
+    Supply: 0
+    Demand: 0
 --- !u!1 &9113503778258820484
 GameObject:
   m_ObjectHideFlags: 0
@@ -567,7 +579,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9113503778258820484}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.03000009, y: 0.5, z: 0.15999973}
+  m_LocalPosition: {x: -1.08, y: 0.5, z: -1.43}
   m_LocalScale: {x: 0.6, y: 1, z: 0.6}
   m_ConstrainProportionsScale: 0
   m_Children: []

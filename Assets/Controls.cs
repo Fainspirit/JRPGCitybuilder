@@ -89,6 +89,24 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Delete"",
+                    ""type"": ""Button"",
+                    ""id"": ""e58dfd02-f4ea-49eb-a852-67dfde226bed"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Shift"",
+                    ""type"": ""Button"",
+                    ""id"": ""ece41d60-5289-487c-bf22-f598c4eebc97"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -234,6 +252,39 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                     ""action"": ""Four"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9f6ae1a2-3db1-4a67-a14a-c2c7bcf39554"",
+                    ""path"": ""<Keyboard>/delete"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Delete"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""9a85fe5d-8918-42fa-991e-cf1e1835195c"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Delete"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""32bd0406-49fe-4017-9027-e92a519ab7fd"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Shift"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -249,6 +300,8 @@ public partial class @Controls : IInputActionCollection2, IDisposable
         m_Global_Two = m_Global.FindAction("Two", throwIfNotFound: true);
         m_Global_Three = m_Global.FindAction("Three", throwIfNotFound: true);
         m_Global_Four = m_Global.FindAction("Four", throwIfNotFound: true);
+        m_Global_Delete = m_Global.FindAction("Delete", throwIfNotFound: true);
+        m_Global_Shift = m_Global.FindAction("Shift", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -315,6 +368,8 @@ public partial class @Controls : IInputActionCollection2, IDisposable
     private readonly InputAction m_Global_Two;
     private readonly InputAction m_Global_Three;
     private readonly InputAction m_Global_Four;
+    private readonly InputAction m_Global_Delete;
+    private readonly InputAction m_Global_Shift;
     public struct GlobalActions
     {
         private @Controls m_Wrapper;
@@ -326,6 +381,8 @@ public partial class @Controls : IInputActionCollection2, IDisposable
         public InputAction @Two => m_Wrapper.m_Global_Two;
         public InputAction @Three => m_Wrapper.m_Global_Three;
         public InputAction @Four => m_Wrapper.m_Global_Four;
+        public InputAction @Delete => m_Wrapper.m_Global_Delete;
+        public InputAction @Shift => m_Wrapper.m_Global_Shift;
         public InputActionMap Get() { return m_Wrapper.m_Global; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -356,6 +413,12 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 @Four.started -= m_Wrapper.m_GlobalActionsCallbackInterface.OnFour;
                 @Four.performed -= m_Wrapper.m_GlobalActionsCallbackInterface.OnFour;
                 @Four.canceled -= m_Wrapper.m_GlobalActionsCallbackInterface.OnFour;
+                @Delete.started -= m_Wrapper.m_GlobalActionsCallbackInterface.OnDelete;
+                @Delete.performed -= m_Wrapper.m_GlobalActionsCallbackInterface.OnDelete;
+                @Delete.canceled -= m_Wrapper.m_GlobalActionsCallbackInterface.OnDelete;
+                @Shift.started -= m_Wrapper.m_GlobalActionsCallbackInterface.OnShift;
+                @Shift.performed -= m_Wrapper.m_GlobalActionsCallbackInterface.OnShift;
+                @Shift.canceled -= m_Wrapper.m_GlobalActionsCallbackInterface.OnShift;
             }
             m_Wrapper.m_GlobalActionsCallbackInterface = instance;
             if (instance != null)
@@ -381,6 +444,12 @@ public partial class @Controls : IInputActionCollection2, IDisposable
                 @Four.started += instance.OnFour;
                 @Four.performed += instance.OnFour;
                 @Four.canceled += instance.OnFour;
+                @Delete.started += instance.OnDelete;
+                @Delete.performed += instance.OnDelete;
+                @Delete.canceled += instance.OnDelete;
+                @Shift.started += instance.OnShift;
+                @Shift.performed += instance.OnShift;
+                @Shift.canceled += instance.OnShift;
             }
         }
     }
@@ -394,5 +463,7 @@ public partial class @Controls : IInputActionCollection2, IDisposable
         void OnTwo(InputAction.CallbackContext context);
         void OnThree(InputAction.CallbackContext context);
         void OnFour(InputAction.CallbackContext context);
+        void OnDelete(InputAction.CallbackContext context);
+        void OnShift(InputAction.CallbackContext context);
     }
 }

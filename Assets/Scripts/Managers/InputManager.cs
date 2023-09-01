@@ -15,7 +15,10 @@ public class InputManager : MonoBehaviour
 
     public static Vector2Int CursorGridPos { get => _cursorGridPos; }
     static Vector2Int _cursorGridPos;
+    static Vector2Int _lastCursorGridPos;
 
+    public delegate void CursorGridCallback(Vector2Int pos);
+    public static event CursorGridCallback OnCursorGridPosChanged;
 
     // Start is called before the first frame update
     private void Awake()
@@ -54,6 +57,17 @@ public class InputManager : MonoBehaviour
 
     void UpdateMouseGridPos()
     {
+        // Save prior
+        _lastCursorGridPos = _cursorGridPos;
+
+        // Update
         _cursorGridPos = new Vector2Int(Mathf.RoundToInt(_cursorPos3D.x * 0.5f), Mathf.RoundToInt(_cursorPos3D.z * 0.5f));
+
+        // If different, raise event
+        if (_cursorGridPos != _lastCursorGridPos)
+        {
+            OnCursorGridPosChanged?.Invoke(_cursorGridPos);
+        }
+
     }
 }

@@ -237,11 +237,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 8097331874956753892}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cdf67de083cc20e4588a67b0e960cb5a, type: 3}
+  m_Script: {fileID: 11500000, guid: f3d72c0076567954a92eeda9d4e2573f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CivilianCost: 0
   Size: {x: 1, y: 1}
-  BuildingType: 2
   Offset: {x: 0, y: 0}
   _position: {x: 0, y: 0}
   _occupyingTiles: []

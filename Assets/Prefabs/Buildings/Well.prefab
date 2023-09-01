@@ -237,11 +237,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 8097331874956753892}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cdf67de083cc20e4588a67b0e960cb5a, type: 3}
+  m_Script: {fileID: 11500000, guid: e4adb7b49bc0342479a598318c41e656, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CivilianCost: 1
   Size: {x: 1, y: 1}
-  BuildingType: 2
   Offset: {x: 0, y: 0}
   _position: {x: 0, y: 0}
   _occupyingTiles: []
+  WaterProduced: 35
+  _waterRef:
+    _resourceType: 0
+    Icon: {fileID: 0}
+    Supply: 0
+    Demand: 0

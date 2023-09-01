@@ -8,7 +8,7 @@ public class TownManager : MonoBehaviour
     static TownManager _instance;
 
     Dictionary<Vector2, Building> _tiles;
-    Building _ghostInstance;
+    Building _placementGhostBuilding;
 
     [SerializeField] List<Building> _buildingList;
 
@@ -26,57 +26,143 @@ public class TownManager : MonoBehaviour
         _tiles = new Dictionary<Vector2, Building>();
         _buildingList = new List<Building>();
 
+        Testing();
+    }
+
+    void Testing()
+    {
+
         InputManager.Controls.Global.Enable();
         InputManager.Controls.Global.One.started += Input_TestOne;
         InputManager.Controls.Global.Two.started += Input_TestTwo;
         InputManager.Controls.Global.Three.started += Input_TestThree;
         InputManager.Controls.Global.Four.started += Input_TestFour;
 
+        InputManager.Controls.Global.Delete.started += Input_DeleteBuildingUnderCursor;
+        InputManager.Controls.Global.Confirm.started += Input_PlaceBuildingGhost;
+        InputManager.Controls.Global.Cancel.started += Input_DeleteBuildingGhost;
+
+        ResourceManager.GetResource(EResourceType.Civilian).ChangeSupply(99);
+
+
+        TownManager.TryPlaceBuilding(
+            BuildingManager.InstanceBuildingByType(
+                EBuildingType.Misc_Portal), new Vector2Int(0, 0));
     }
+
+    void Input_PlaceBuildingGhost(InputAction.CallbackContext c)
+    {
+        if (_placementGhostBuilding == null)
+        {
+            return;
+        }
+
+        if (BuildingManager.CanBuildBuildingOfType(_placementGhostBuilding.BuildingType))
+        {
+            // If you put it down
+            if (TryPlaceBuilding(_placementGhostBuilding, InputManager.CursorGridPos))
+            {
+                EBuildingType buildingType = _placementGhostBuilding.BuildingType;
+
+                ForgetPlacementGhost();
+
+                // Make a new one
+                CreatePlacementGhost(buildingType);
+                
+            }
+        }
+    }
+
+    void Input_DeleteBuildingGhost(InputAction.CallbackContext c)
+    {
+        DeletePlacementGhost();
+    }
+
+    void Input_DeleteBuildingUnderCursor(InputAction.CallbackContext c)
+    {
+        Building b;
+        if (_tiles.TryGetValue(InputManager.CursorGridPos, out b)) {
+            b.DestroyBuilding();
+        }
+    }
+
+
 
     void Input_TestOne(InputAction.CallbackContext c)
     {
-        TestTryPlaceBuildingAtCursor(EBuildingType.Misc_DirtPath);
+        DeleteAndChangePlacementGhost(EBuildingType.Misc_DirtPath);
     }
     void Input_TestTwo(InputAction.CallbackContext c)
     {
-        TestTryPlaceBuildingAtCursor(EBuildingType.Misc_Portal);
+        DeleteAndChangePlacementGhost(EBuildingType.Gathering_Well);
     }
     void Input_TestThree(InputAction.CallbackContext c)
     {
-        TestTryPlaceBuildingAtCursor(EBuildingType.Gathering_Farm);
+        DeleteAndChangePlacementGhost(EBuildingType.Gathering_Farm);
     }
     void Input_TestFour(InputAction.CallbackContext c)
     {
-        TestTryPlaceBuildingAtCursor(EBuildingType.Gathering_Well);
+        DeleteAndChangePlacementGhost(EBuildingType.Scouting_ExplorersHut);
     }
 
-    void TestTryPlaceBuildingAtCursor(EBuildingType type)
+
+    // PLACEMENT GHOST
+    void DeleteAndChangePlacementGhost(EBuildingType type)
     {
-        Debug.Log("Test building placement!");
-        Building b = BuildingManager.InstanceBuildingByType(type);
-
-        Vector2Int pos = InputManager.CursorGridPos;
-        TryPlaceBuilding(b, pos);
+        Debug.Log("Changing ghost to " + type);
+        if (_placementGhostBuilding != null) {
+            DeletePlacementGhost();
+        }
+        CreatePlacementGhost(type);
     }
+
+    void CreatePlacementGhost(EBuildingType type)
+    {
+        Debug.Log("Creating ghost of " + type);
+        _placementGhostBuilding = BuildingManager.InstanceBuildingByType(type);
+        MovePlacementGhostTo(InputManager.CursorGridPos);
+
+        InputManager.OnCursorGridPosChanged += MovePlacementGhostTo;
+    }
+
+    void MovePlacementGhostTo(Vector2Int gridPos)
+    {
+        _placementGhostBuilding.transform.position = new Vector3(gridPos.x, 0, gridPos.y) * 2;
+    }
+
+    // Remove object entirely
+    void DeletePlacementGhost()
+    {
+        Debug.Log("Removing ghost of " + _placementGhostBuilding.BuildingType);
+        Destroy(_placementGhostBuilding.gameObject);
+        InputManager.OnCursorGridPosChanged -= MovePlacementGhostTo;
+    }
+
+    // Placed it - keep object but remove from tracking
+    void ForgetPlacementGhost()
+    {
+        _placementGhostBuilding = null;
+        InputManager.OnCursorGridPosChanged -= MovePlacementGhostTo;
+    }
+
 
     // BUILDING PLACEMENT
     public static void GhostBuildingPlacement(EBuildingType type, Vector2Int pos)
     {
-        _instance._ghostInstance = BuildingManager.InstanceBuildingByType(type);
-        _instance._ghostInstance.transform.position = new Vector3(pos.x, 0, pos.y);
+        _instance._placementGhostBuilding = BuildingManager.InstanceBuildingByType(type);
+        _instance._placementGhostBuilding.transform.position = new Vector3(pos.x, 0, pos.y);
     }
 
-    public static void TryPlaceBuilding(Building building, Vector2Int pos)
+    public static bool TryPlaceBuilding(Building building, Vector2Int pos)
     {
         if (!IsPlacementValid(building, pos))
         {
             Debug.LogWarning("Invalid placement!");
-            Destroy(building.gameObject); // maybe check first eh
-            return;
+            return false;
         }
 
         PlaceBuilding(building, pos);
+        return true;
     }
 
     static bool IsPlacementValid(Building building, Vector2Int pos)
@@ -129,7 +215,20 @@ public class TownManager : MonoBehaviour
         }
 
         building.SetTransformPositionToGridPos(pos);
-        building.SetBuildingActive(true);
+        building.EnableBuilding();
 
+    }
+
+    public static bool IsTileEmpty(Vector2Int pos)
+    {
+        return !_instance._tiles.ContainsKey(pos);
+    }
+
+    public static void FreeTiles(IEnumerable<Vector2Int> positions)
+    {
+        foreach (var pos in positions)
+        {
+            _instance._tiles.Remove(pos);
+        }
     }
 }

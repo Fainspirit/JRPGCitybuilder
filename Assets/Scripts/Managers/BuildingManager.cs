@@ -6,10 +6,9 @@ public class BuildingManager : MonoBehaviour
 {
     static BuildingManager _instance;
 
-    Dictionary<EBuildingType, Building> buildings = new Dictionary<EBuildingType, Building>();
-
+    Dictionary<EBuildingType, Building> _buildings;
     [SerializeField] Building _defaultBuilding;
-    [SerializeField] List<BuildingModelInfo> _infos;
+    [SerializeField] List<Building> _buildingPool;
 
     void Awake()
     {
@@ -23,10 +22,6 @@ public class BuildingManager : MonoBehaviour
 
         SetupModelLookups();
 
-
-        TownManager.TryPlaceBuilding(
-            BuildingManager.InstanceBuildingByType(
-                EBuildingType.Misc_Portal), new Vector2Int(0, 0));
     }
 
     // Start is called before the first frame update
@@ -43,23 +38,47 @@ public class BuildingManager : MonoBehaviour
 
     void SetupModelLookups()
     {
-        foreach (BuildingModelInfo info in _infos)
+        _buildings = new Dictionary<EBuildingType, Building>();
+        Building b;
+
+        foreach (Building building in _buildingPool)
         {
-            buildings[info.BuildingType] = info.ModelObject;
+            if (_buildings.TryGetValue(building.BuildingType, out b))
+            {
+                throw new System.Exception("Building type already exists: " + building.BuildingType.ToString());
+            }
+
+            _buildings[building.BuildingType] = building;
+            Debug.Log("Registered [BUILDING] type [" + building.BuildingType + "]");
+
+
+
         }
     }
 
     public static Building InstanceBuildingByType(EBuildingType type)
     {
-        if (_instance.buildings.ContainsKey(type))
+        if (_instance._buildings.ContainsKey(type))
         {
-            Building b = Instantiate(_instance.buildings[type]);
+            Building b = Instantiate(_instance._buildings[type]);
             return b;
         }
 
         else
         {
+            Debug.LogWarning("Could not find building of type " + type);
             return Instantiate(_instance._defaultBuilding);
         }
+    }
+
+    public static bool CanBuildBuildingOfType(EBuildingType type)
+    {
+        if (_instance._buildings.ContainsKey(type))
+        {
+            return _instance._buildings[type].AllowedToBuild();
+        }
+
+        Debug.LogWarning("Could not find building of type " + type);
+        return false;
     }
 }
