@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 public enum EClass
 {
-    Trickster,
+    Geomancer,
     Ascetic,
     Scourge,
     Chef,
@@ -14,15 +14,15 @@ public enum EClass
     Demolitionist,
     Illusionist,
     Refractor,
-    Paladin,
+    Guardian,
     Skydancer,
     Cleric,
     Druid,
     Pirate,
     Diva,
-    Survivor,
+    Actuary,
     Hydromancer,
-    Ninja,
+    Schemer,
     Astronomer,
     Enchanter,
     Scribe,

@@ -8,7 +8,7 @@ public class BuildingExplorersHut : Building
 
     [SerializeField] int FoodConsumed;
 
-    [SerializeField] DungeonData _currentDungeon;
+    [SerializeField] Dungeon _currentDungeon;
     [SerializeField] float scoutTimeNeeded;
     [SerializeField] float scoutTimeElapsed;
 

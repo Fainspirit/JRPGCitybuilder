@@ -9,6 +9,6 @@ using UnityEngine;
 public abstract class SkillEffect : ScriptableObject
 {
     // Can make particles or animations appear, deal damage, etc
-    public abstract IEnumerator ApplyEffect(Battle battle, Unit unit, float power);
+    public abstract IEnumerator ApplyEffect(Battle battle, Unit target, float power);
 }
 

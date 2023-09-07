@@ -10,36 +10,36 @@ public class Unit : MonoBehaviour
 {
     public string UnitName;
     [SerializeField] EClass Class;
-
-    [SerializeField] List<Skill> _skills;
+    [SerializeField] public bool IsAlly;
+    [SerializeField] Weapon Weapon;
 
     public Battle Battle;
 
     private void Start()
     {
-        foreach (var skill in _skills)
+        Weapon = Weapon.CreateAtLevel(7);
+        foreach (var skillCastData in Weapon.SkillCastData)
         {
-            CastSkill(skill, this);
+            CastSkill(skillCastData, this);
         }
     }
 
 
-    public void CastSkill(Skill skill, Unit target)
+    public void CastSkill(SkillCastData skillCastData, Unit target)
     {
-        Debug.Log(UnitName + " casting " + skill.name + " on " + target.UnitName);
-        StartCoroutine(CastSkillRoutine(skill, target));
+        StartCoroutine(CastSkillRoutine(skillCastData, target));
     }
 
-    IEnumerator CastSkillRoutine(Skill skill, Unit target)
+    IEnumerator CastSkillRoutine(SkillCastData skillCastData, Unit target)
     {
-        int currentEffect = 0;
+        Debug.Log(UnitName +
+            " casting " +
+            skillCastData.Skill.name +
+            " at level " +
+            skillCastData.CastLevel +
+            " on " +
+            target.UnitName);
 
-        while (currentEffect < _skills.Count)
-        {
-            yield return _skills.ElementAt(currentEffect).Cast(Battle, target);
-            currentEffect++;
-        }
-
-        yield return null;
+        yield return skillCastData.Skill.CastAtLevel(Battle, target, skillCastData.CastLevel);
     }
 }

@@ -4,7 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-public class DungeonData
+public enum EPresence
 {
+    None,
+    One,
+    Few,
+    Many
 }
-

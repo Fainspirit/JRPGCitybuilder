@@ -1024,8 +1024,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UnitName: Iris
   Class: 9
-  _skills:
-  - {fileID: 11400000, guid: d409103eb335abe44b690b15bcb0a64a, type: 2}
+  IsAlly: 1
+  Weapon: {fileID: 11400000, guid: af638bb1587a7a54ab8b09e992e10a88, type: 2}
 --- !u!4 &1320052246
 Transform:
   m_ObjectHideFlags: 0
